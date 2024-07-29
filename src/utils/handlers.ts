@@ -1,6 +1,6 @@
 import { getNow } from "./time";
 
-export function log(message: string) {
+export function log(message: any) {
   // eslint-disable-next-line no-console
   console.log(`[-----${getNow()}-----]`, message);
 }

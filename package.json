@@ -35,6 +35,9 @@
     "grammy": "^1.23.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.45",
+    "puppeteer": "^22.14.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
     "ws": "^8.16.0"
   }
 }
