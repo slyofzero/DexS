@@ -1,10 +1,5 @@
 // import { Bot } from "grammy";
 // import { initiateBotCommands, initiateCallbackQueries } from "./bot";
-import { log } from "./utils/handlers";
-import { DEX_URL } from "./utils/env";
-import { WebSocket } from "ws";
-import { wssHeaders } from "./utils/constants";
-
 import puppeteer from "puppeteer-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
@@ -26,7 +21,7 @@ async function getTrendingTokens() {
 
   await browser.close();
 
-  return JSON.parse(allText);
+  return allText;
 }
 
 (async function () {
