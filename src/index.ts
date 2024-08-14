@@ -40,23 +40,31 @@ puppeteer.use(StealthPlugin());
   const page = await browser.newPage();
   // const ws = new WebSocket(DEX_URL || "", { headers: wssHeaders });
   await page.goto("https://www.defined.fi/tokens/trending/sol");
+  try {
+    const parentBodyCssPath =
+      "html body div#root div.MuiBox-root.css-1acnjbn div.MuiBox-root.css-ravnwq div.MuiBox-root.css-fj12je div.MuiBox-root.css-1cyxigs div.MuiBox-root.css-llt70d div.MuiBox-root.css-nqxks1 div.MuiBox-root.css-1hgzpqb div.MuiBox-root.css-80k96b div.css-1t043cy";
 
-  const parentBodyCssPath =
-    "html body div#root div.MuiBox-root.css-1acnjbn div.MuiBox-root.css-ravnwq div.MuiBox-root.css-fj12je div.MuiBox-root.css-1cyxigs div.MuiBox-root.css-llt70d div.MuiBox-root.css-nqxks1 div.MuiBox-root.css-1hgzpqb div.MuiBox-root.css-80k96b div.css-1t043cy";
+    const cssPath = `${parentBodyCssPath} div a`;
 
-  const cssPath = `${parentBodyCssPath} div a`;
+    await page.waitForSelector(cssPath, { timeout: 10000 });
+    const div = await page.$(cssPath);
+    console.log(await (await div?.getProperty("href"))?.jsonValue());
+    //   console.log(await div);
 
-  await page.waitForSelector(cssPath, { timeout: 10000 });
-  const div = await page.$(cssPath);
-  console.log(await (await div?.getProperty("href"))?.jsonValue());
-  //   console.log(await div);
+    //   const allText = await page.evaluate(() => {
+    //     return document.body.innerText;
+    //   });
 
-  //   const allText = await page.evaluate(() => {
-  //     return document.body.innerText;
-  //   });
-  await browser.close();
+    //   console.log(JSON.parse(allText));
+    // const trendingTokensList = await getTrendingTokens();
+    // console.log(trendingTokensList, trendingTokensList.length);
+  } catch (error) {
+    const textContent = await page.evaluate(() => {
+      return document.body.innerText;
+    });
 
-  //   console.log(JSON.parse(allText));
-  // const trendingTokensList = await getTrendingTokens();
-  // console.log(trendingTokensList, trendingTokensList.length);
+    console.log(textContent);
+  } finally {
+    await browser.close();
+  }
 })();
