@@ -36,7 +36,7 @@ puppeteer.use(StealthPlugin());
 // }
 
 (async function () {
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
   // const ws = new WebSocket(DEX_URL || "", { headers: wssHeaders });
   await page.goto("https://www.defined.fi/tokens/trending/sol");
