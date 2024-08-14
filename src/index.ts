@@ -39,15 +39,24 @@ puppeteer.use(StealthPlugin());
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
   // const ws = new WebSocket(DEX_URL || "", { headers: wssHeaders });
-  await page.goto(
-    "https://app.geckoterminal.com/api/p1/solana/pools?include=dex,dex.network,dex.network.network_metric,tokens&page=1&include_network_metrics=true&sort=-1h_trend_score&networks=solana"
-  );
-  const allText = await page.evaluate(() => {
-    return document.body.innerText;
-  });
+  await page.goto("https://www.defined.fi/tokens/trending/sol");
+
+  const parentBodyCssPath =
+    "html body div#root div.MuiBox-root.css-1acnjbn div.MuiBox-root.css-ravnwq div.MuiBox-root.css-fj12je div.MuiBox-root.css-1cyxigs div.MuiBox-root.css-llt70d div.MuiBox-root.css-nqxks1 div.MuiBox-root.css-1hgzpqb div.MuiBox-root.css-80k96b div.css-1t043cy";
+
+  const cssPath = `${parentBodyCssPath} div a`;
+
+  await page.waitForSelector(cssPath, { timeout: 10000 });
+  const div = await page.$(cssPath);
+  console.log(await (await div?.getProperty("href"))?.jsonValue());
+  //   console.log(await div);
+
+  //   const allText = await page.evaluate(() => {
+  //     return document.body.innerText;
+  //   });
   await browser.close();
 
-  console.log(JSON.parse(allText));
+  //   console.log(JSON.parse(allText));
   // const trendingTokensList = await getTrendingTokens();
   // console.log(trendingTokensList, trendingTokensList.length);
 })();
