@@ -36,18 +36,18 @@ puppeteer.use(StealthPlugin());
 // }
 
 (async function () {
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
   // const ws = new WebSocket(DEX_URL || "", { headers: wssHeaders });
   await page.goto("https://www.defined.fi/tokens/trending/sol");
   try {
-    const parentBodyCssPath =
-      "html body div#root div.MuiBox-root.css-1acnjbn div.MuiBox-root.css-ravnwq div.MuiBox-root.css-fj12je div.MuiBox-root.css-1cyxigs div.MuiBox-root.css-llt70d div.MuiBox-root.css-nqxks1 div.MuiBox-root.css-1hgzpqb div.MuiBox-root.css-80k96b div.css-1t043cy";
+    const xPath =
+      '::-p-xpath(//*[@id="root"]/div[2]/div/div[2]/div[2]/div/div[2]/div/div/div[2]/div[1]/a)';
 
-    const cssPath = `${parentBodyCssPath} div a`;
-
-    await page.waitForSelector(cssPath, { timeout: 10000 });
-    const div = await page.$(cssPath);
+    await page.waitForSelector(xPath, {
+      timeout: 10000,
+    });
+    const div = await page.$(xPath);
     console.log(await (await div?.getProperty("href"))?.jsonValue());
     //   console.log(await div);
 
@@ -59,12 +59,14 @@ puppeteer.use(StealthPlugin());
     // const trendingTokensList = await getTrendingTokens();
     // console.log(trendingTokensList, trendingTokensList.length);
   } catch (error) {
-    const textContent = await page.evaluate(() => {
-      return document.body.innerText;
-    });
+    const err = error as Error;
+    console.log(err.message);
+    //   const textContent = await page.evaluate(() => {
+    //     return document.body.innerText;
+    //   });
 
-    console.log(textContent);
+    //   console.log(textContent);
   } finally {
-    await browser.close();
+    //   await browser.close();
   }
 })();
